@@ -86,8 +86,7 @@ LOCAL_MODULE_TAGS := eng
 LOCAL_MODULE := dropbear
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/libtommath 
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/libtomcrypt/src/headers
-LOCAL_CFLAGS += -DDROPBEAR_SERVER -DANDROID_CHANGES  -DSFTPSERVER_PATH='"/data/data/com.teslacoilsw.quicksshd/dropbear/sftp-server"'
-# -DSFTPSERVER_PATH=/data/data/com.teslacoilsw.quicksshd/dropbear/sftp-server
+LOCAL_CFLAGS += -DDROPBEAR_SERVER -DANDROID_CHANGES  -DSFTPSERVER_PATH='"/data/dropbear/sftp-server"'
 
 include $(BUILD_EXECUTABLE)
 
@@ -113,6 +112,29 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/libtomcrypt/src/headers
 LOCAL_CFLAGS += -DDROPBEAR_SERVER
 
 include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
+
+LOCAL_SRC_FILES:=\
+	dbutil.c buffer.c \
+	dss.c bignum.c \
+	signkey.c rsa.c random.c \
+	queue.c \
+	atomicio.c compat.c fake-rfc2553.c keyimport.c
+
+LOCAL_SRC_FILES+=\
+	 dropbearconvert.c gendss.c genrsa.c
+	
+LOCAL_STATIC_LIBRARIES := libtommath libtomcrypt
+
+LOCAL_MODULE_PATH := $(TARGET_OUT_OPTIONAL_EXECUTABLES)
+LOCAL_MODULE_TAGS := eng
+LOCAL_MODULE := dropbearconvert
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/libtommath 
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/libtomcrypt/src/headers
+LOCAL_CFLAGS += -DDROPBEAR_SERVER
+
+include $(BUILD_EXECUTABLE) 
 
 endif  # TARGET_SIMULATOR != true
 
